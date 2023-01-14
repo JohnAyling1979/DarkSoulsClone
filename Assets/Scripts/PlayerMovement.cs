@@ -37,6 +37,7 @@ namespace DarkSouls
 
             moveDirection = cameraObject.forward * inputHandler.vertical + cameraObject.right * inputHandler.horizontal;
             moveDirection.Normalize();
+            moveDirection.y = 0;
 
             moveDirection *= movementSpeed;
 

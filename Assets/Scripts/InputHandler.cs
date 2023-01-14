@@ -13,9 +13,15 @@ namespace DarkSouls
         public float mouseY;
 
         PlayerControls inputactions;
+        CameraHandler cameraHandler;
 
         Vector2 movementInput;
         Vector2 cameraInput;
+
+        void Awake()
+        {
+            cameraHandler = CameraHandler.singleton;
+        }
 
         public void OnEnable()
         {
@@ -28,6 +34,17 @@ namespace DarkSouls
             }
 
             inputactions.Enable();
+        }
+
+        void FixedUpdate()
+        {
+            if (cameraHandler != null)
+            {
+                float delta = Time.fixedDeltaTime;
+
+                cameraHandler.FollowTarget(delta);
+                cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
+            }
         }
 
         private void OnDisable()
