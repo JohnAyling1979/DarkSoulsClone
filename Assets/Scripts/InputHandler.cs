@@ -11,6 +11,9 @@ namespace DarkSouls
         public float moveAmount;
         public float mouseX;
         public float mouseY;
+        public bool b_Input;
+        public bool rollFlag;
+        public bool isInteracting;
 
         PlayerControls inputactions;
         CameraHandler cameraHandler;
@@ -55,6 +58,7 @@ namespace DarkSouls
         public void TickInput(float delta)
         {
             MoveInput(delta);
+            HandleRollInput(delta);
         }
 
         private void MoveInput(float delta)
@@ -65,6 +69,16 @@ namespace DarkSouls
 
             mouseX = cameraInput.x;
             mouseY = cameraInput.y;
+        }
+
+        private void HandleRollInput(float delta)
+        {
+            b_Input = inputactions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+
+            if (b_Input)
+            {
+                rollFlag = true;
+            }
         }
     }
 }

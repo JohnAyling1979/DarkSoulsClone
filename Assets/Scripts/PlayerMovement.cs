@@ -6,7 +6,7 @@ namespace DarkSouls
 {
     public class PlayerMovement : MonoBehaviour
     {
-        Rigidbody myRigidbody;
+        public Rigidbody myRigidbody;
         GameObject normalCamera;
         Transform myTransform;
         Transform cameraObject;
@@ -35,6 +35,36 @@ namespace DarkSouls
 
             inputHandler.TickInput(delta);
 
+            HandleMovement(delta);
+            HandleRotation(delta);
+            HandleRollingAndSprinting(delta);
+        }
+
+        #region Movement
+
+        Vector3 normalVector;
+        Vector3 targetPosition;
+
+        private void HandleRotation(float delta)
+        {
+            if (animateHandler.canRotate)
+            {
+                Vector3 targetDir = cameraObject.forward * inputHandler.vertical + cameraObject.right * inputHandler.horizontal;
+
+                targetDir.Normalize();
+                targetDir.y = 0;
+
+                if (targetDir == Vector3.zero)
+                {
+                    targetDir = myTransform.forward;
+                }
+
+                myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(targetDir), rotationSpeed * delta);
+            }
+        }
+
+        private void HandleMovement(float delta)
+        {
             moveDirection = cameraObject.forward * inputHandler.vertical + cameraObject.right * inputHandler.horizontal;
             moveDirection.Normalize();
             moveDirection.y = 0;
@@ -45,31 +75,34 @@ namespace DarkSouls
             myRigidbody.velocity = projectedVelocity;
 
             animateHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
-
-            if (animateHandler.canRotate)
-            {
-                HandleRotation(delta);
-            }
         }
 
-        #region Movement
-
-        Vector3 normalVector;
-        Vector3 targetPosition;
-
-        private void HandleRotation(float delta)
+        public void HandleRollingAndSprinting(float delta)
         {
-            Vector3 targetDir = cameraObject.forward * inputHandler.vertical + cameraObject.right * inputHandler.horizontal;
-
-            targetDir.Normalize();
-            targetDir.y = 0;
-
-            if (targetDir == Vector3.zero)
+            if (animateHandler.anim.GetBool("isInteracting"))
             {
-                targetDir = myTransform.forward;
+                return;
             }
 
-            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(targetDir), rotationSpeed * delta);
+            if (inputHandler.rollFlag)
+            {
+                moveDirection = cameraObject.forward * inputHandler.vertical + cameraObject.right * inputHandler.horizontal;
+                moveDirection.Normalize();
+                moveDirection.y = 0;
+
+                if (inputHandler.moveAmount > 0)
+                {
+                    animateHandler.PlayTargetAnimation("Rolling", true);
+
+                    // Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
+
+                    // transform.rotation = rollRotation;
+                }
+                else
+                {
+                    animateHandler.PlayTargetAnimation("StepBack", true);
+                }
+            }
         }
 
         #endregion

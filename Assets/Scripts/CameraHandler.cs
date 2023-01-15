@@ -90,8 +90,6 @@ namespace DarkSouls
 
             cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, delta / 0.2f);
 
-            Debug.Log(cameraTransformPosition);
-
             cameraTransform.localPosition = cameraTransformPosition;
         }
     }

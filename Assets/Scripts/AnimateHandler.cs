@@ -7,6 +7,8 @@ namespace DarkSouls
     public class AnimateHandler : MonoBehaviour
     {
         public Animator anim;
+        public InputHandler inputHandler;
+        public PlayerMovement playerMovement;
         public bool canRotate;
 
         int vertical;
@@ -15,6 +17,8 @@ namespace DarkSouls
         void Start()
         {
             anim = GetComponent<Animator>();
+            inputHandler = GetComponentInParent<InputHandler>();
+            playerMovement = GetComponentInParent<PlayerMovement>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
         }
@@ -57,6 +61,29 @@ namespace DarkSouls
             }
 
             return m;
+        }
+
+        public void PlayTargetAnimation(string targetAnimation, bool isInteracting)
+        {
+            anim.applyRootMotion = isInteracting;
+            anim.SetBool("isInteracting", isInteracting);
+            anim.CrossFade(targetAnimation, 0.2f);
+        }
+
+        private void OnAnimatorMove()
+        {
+            if (!inputHandler.isInteracting)
+            {
+                return;
+            }
+
+            float delta = Time.deltaTime;
+
+            playerMovement.myRigidbody.drag = 0;
+            Vector3 deltaPosition = anim.deltaPosition;
+            deltaPosition.y = 0;
+            Vector3 velocity = deltaPosition / delta;
+            playerMovement.myRigidbody.velocity = velocity;
         }
     }
 }

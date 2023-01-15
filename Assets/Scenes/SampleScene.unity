@@ -793,6 +793,7 @@ GameObject:
   - component: {fileID: 1509679197}
   - component: {fileID: 1509679200}
   - component: {fileID: 1509679199}
+  - component: {fileID: 1509679201}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -858,6 +859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd78a60fed82db8ba834352e6cde8a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myRigidbody: {fileID: 0}
   movementSpeed: 5
   rotationSpeed: 10
 --- !u!114 &1509679200
@@ -877,6 +879,21 @@ MonoBehaviour:
   moveAmount: 0
   mouseX: 0
   mouseY: 0
+  b_Input: 0
+  rollFlag: 0
+  isInteracting: 0
+--- !u!114 &1509679201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509679195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbdad3b1600ebf6868c4dbca90304996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1562873020 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f5d641dbd64a90e6eaa9bd5cfb11c3ed, type: 3}
@@ -900,6 +917,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  inputHandler: {fileID: 0}
+  playerMovement: {fileID: 0}
   canRotate: 1
 --- !u!1 &1621422609
 GameObject:
