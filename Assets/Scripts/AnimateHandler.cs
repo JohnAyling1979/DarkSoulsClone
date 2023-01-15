@@ -23,10 +23,18 @@ namespace DarkSouls
             horizontal = Animator.StringToHash("Horizontal");
         }
 
-        public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement)
+        public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting)
         {
-            anim.SetFloat(vertical, ClampMovement(verticalMovement), 0.1f, Time.deltaTime);
-            anim.SetFloat(horizontal, ClampMovement(horizontalMovement), 0.1f, Time.deltaTime);
+            float v = ClampMovement(verticalMovement);
+            float h = ClampMovement(horizontalMovement);
+
+            if (v != 0 && isSprinting)
+            {
+                v = 2;
+            }
+
+            anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
+            anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
         }
 
         public void CanRotate()

@@ -18,7 +18,11 @@ namespace DarkSouls
         [SerializeField]
         float movementSpeed = 5;
         [SerializeField]
+        float sprintSpeed = 10;
+        [SerializeField]
         float rotationSpeed = 10;
+
+        public bool isSprinting;
 
         void Start()
         {
@@ -32,6 +36,8 @@ namespace DarkSouls
         void Update()
         {
             float delta = Time.deltaTime;
+
+            isSprinting = inputHandler.b_Input;
 
             inputHandler.TickInput(delta);
 
@@ -65,16 +71,29 @@ namespace DarkSouls
 
         private void HandleMovement(float delta)
         {
+            if (inputHandler.rollFlag)
+            {
+                return;
+            }
+
             moveDirection = cameraObject.forward * inputHandler.vertical + cameraObject.right * inputHandler.horizontal;
             moveDirection.Normalize();
             moveDirection.y = 0;
+
+            float speed = movementSpeed;
+
+            if (inputHandler.sprintFlag)
+            {
+                speed = sprintSpeed;
+                isSprinting = true;
+            }
 
             moveDirection *= movementSpeed;
 
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             myRigidbody.velocity = projectedVelocity;
 
-            animateHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+            animateHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
         }
 
         public void HandleRollingAndSprinting(float delta)
@@ -94,9 +113,9 @@ namespace DarkSouls
                 {
                     animateHandler.PlayTargetAnimation("Rolling", true);
 
-                    // Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
+                    Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
 
-                    // transform.rotation = rollRotation;
+                    transform.rotation = rollRotation;
                 }
                 else
                 {
