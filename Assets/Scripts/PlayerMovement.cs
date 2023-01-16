@@ -173,7 +173,7 @@ namespace DarkSouls
                 if (playerManager.isGrounded)
                 {
                     playerManager.isGrounded = false;
-                    myRigidbody.AddForce((Vector3.up + moveDirection) * fallingSpeed * 5);
+                    myRigidbody.AddForce((Vector3.up + moveDirection) * 5 * fallingSpeed);
                 }
 
                 if (playerManager.isInAir == false)

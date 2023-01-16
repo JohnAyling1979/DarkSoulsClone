@@ -21,6 +21,7 @@ namespace DarkSouls
         PlayerControls inputactions;
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
+        PlayerManager playerManager;
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -42,6 +43,7 @@ namespace DarkSouls
         {
             playerAttacker = GetComponent<PlayerAttacker>();
             playerInventory = GetComponent<PlayerInventory>();
+            playerManager = GetComponent<PlayerManager>();
         }
 
         private void OnDisable()
@@ -87,6 +89,12 @@ namespace DarkSouls
 
         private void HandleAttackInput(float delta)
         {
+            if (playerManager.isInteracting)
+            {
+                return;
+            }
+
+
             inputactions.PlayerActions.RB.performed += i => rb_Input = true;
             inputactions.PlayerActions.RT.performed += i => rt_Input = true;
 
