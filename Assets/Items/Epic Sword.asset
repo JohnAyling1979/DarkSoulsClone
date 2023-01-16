@@ -16,3 +16,5 @@ MonoBehaviour:
   itemName: Epic Sword
   modelPrefab: {fileID: 2970401347039988394, guid: 236fe90b3ae63a0199b99e4bfc9e0207, type: 3}
   isUnarmed: 0
+  OH_LIGHT_ATTACK_1: OH_Light_Attack_01
+  OH_HEAVY_ATTACK_1: OH_Heavy_Attack_01

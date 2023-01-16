@@ -12,11 +12,15 @@ namespace DarkSouls
         public float mouseX;
         public float mouseY;
         public bool b_Input;
+        public bool rb_Input;
+        public bool rt_Input;
         public bool rollFlag;
         public bool sprintFlag;
         public float rollInputTimer;
 
         PlayerControls inputactions;
+        PlayerAttacker playerAttacker;
+        PlayerInventory playerInventory;
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -34,6 +38,12 @@ namespace DarkSouls
             inputactions.Enable();
         }
 
+        public void Start()
+        {
+            playerAttacker = GetComponent<PlayerAttacker>();
+            playerInventory = GetComponent<PlayerInventory>();
+        }
+
         private void OnDisable()
         {
             inputactions.Disable();
@@ -43,6 +53,7 @@ namespace DarkSouls
         {
             MoveInput(delta);
             HandleRollInput(delta);
+            HandleAttackInput(delta);
         }
 
         private void MoveInput(float delta)
@@ -71,6 +82,22 @@ namespace DarkSouls
                 }
 
                 rollInputTimer = 0;
+            }
+        }
+
+        private void HandleAttackInput(float delta)
+        {
+            inputactions.PlayerActions.RB.performed += i => rb_Input = true;
+            inputactions.PlayerActions.RT.performed += i => rt_Input = true;
+
+            if (rb_Input)
+            {
+                playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
+            }
+
+            if (rt_Input)
+            {
+                playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
             }
         }
     }
