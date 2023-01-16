@@ -75,6 +75,11 @@ namespace DarkSouls
 
         public void PlayTargetAnimation(string targetAnimation, bool isInteracting)
         {
+            if (playerManager.isInteracting)
+            {
+                return;
+            }
+
             anim.applyRootMotion = isInteracting;
             anim.SetBool("isInteracting", isInteracting);
             anim.CrossFade(targetAnimation, 0.2f);
