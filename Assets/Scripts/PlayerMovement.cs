@@ -89,7 +89,7 @@ namespace DarkSouls
                 playerManager.isSprinting = true;
             }
 
-            moveDirection *= movementSpeed;
+            moveDirection *= speed;
 
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             myRigidbody.velocity = projectedVelocity;

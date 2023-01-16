@@ -137,9 +137,9 @@ MonoBehaviour:
   groundDetectionRayStartPoint: 0.5
   minimumDistanceNeededToBeginFall: 0.75
   movementSpeed: 5
-  sprintSpeed: 10
+  sprintSpeed: 50
   rotationSpeed: 10
-  fallingSpeed: 20
+  fallingSpeed: 10
 --- !u!114 &7745984997577458935
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,13 +17,10 @@ namespace DarkSouls
         CameraHandler cameraHandler;
         PlayerMovement playerMovement;
 
-        void Awake()
-        {
-            cameraHandler = CameraHandler.singleton;
-        }
-
         void Start()
         {
+            cameraHandler = CameraHandler.singleton;
+
             inputHandler = GetComponent<InputHandler>();
             anim = GetComponentInChildren<Animator>();
             playerMovement = GetComponent<PlayerMovement>();
