@@ -7,8 +7,9 @@ namespace DarkSouls
     public class AnimateHandler : MonoBehaviour
     {
         public Animator anim;
-        public InputHandler inputHandler;
-        public PlayerMovement playerMovement;
+        InputHandler inputHandler;
+        PlayerMovement playerMovement;
+        PlayerManager playerManager;
         public bool canRotate;
 
         int vertical;
@@ -16,9 +17,10 @@ namespace DarkSouls
 
         void Start()
         {
-            anim = GetComponent<Animator>();
             inputHandler = GetComponentInParent<InputHandler>();
+            playerManager = GetComponentInParent<PlayerManager>();
             playerMovement = GetComponentInParent<PlayerMovement>();
+            anim = GetComponent<Animator>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
         }
@@ -80,7 +82,7 @@ namespace DarkSouls
 
         private void OnAnimatorMove()
         {
-            if (!inputHandler.isInteracting)
+            if (!playerManager.isInteracting)
             {
                 return;
             }

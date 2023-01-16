@@ -13,8 +13,9 @@ namespace DarkSouls
         InputHandler inputHandler;
         Vector3 moveDirection;
         AnimateHandler animateHandler;
+        PlayerManager playerManager;
 
-        [Header("Stats")]
+        [Header("Movement Stats")]
         [SerializeField]
         float movementSpeed = 5;
         [SerializeField]
@@ -22,10 +23,9 @@ namespace DarkSouls
         [SerializeField]
         float rotationSpeed = 10;
 
-        public bool isSprinting;
-
         void Start()
         {
+            playerManager = GetComponent<PlayerManager>();
             myRigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animateHandler = GetComponentInChildren<AnimateHandler>();
@@ -33,25 +33,12 @@ namespace DarkSouls
             myTransform = transform;
         }
 
-        void Update()
-        {
-            float delta = Time.deltaTime;
-
-            isSprinting = inputHandler.b_Input;
-
-            inputHandler.TickInput(delta);
-
-            HandleMovement(delta);
-            HandleRotation(delta);
-            HandleRollingAndSprinting(delta);
-        }
-
         #region Movement
 
         Vector3 normalVector;
         Vector3 targetPosition;
 
-        private void HandleRotation(float delta)
+        public void HandleRotation(float delta)
         {
             if (animateHandler.canRotate)
             {
@@ -69,7 +56,7 @@ namespace DarkSouls
             }
         }
 
-        private void HandleMovement(float delta)
+        public void HandleMovement(float delta)
         {
             if (inputHandler.rollFlag)
             {
@@ -85,7 +72,7 @@ namespace DarkSouls
             if (inputHandler.sprintFlag)
             {
                 speed = sprintSpeed;
-                isSprinting = true;
+                playerManager.isSprinting = true;
             }
 
             moveDirection *= movementSpeed;
@@ -93,7 +80,7 @@ namespace DarkSouls
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             myRigidbody.velocity = projectedVelocity;
 
-            animateHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
+            animateHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
         }
 
         public void HandleRollingAndSprinting(float delta)
