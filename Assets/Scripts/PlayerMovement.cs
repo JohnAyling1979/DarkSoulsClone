@@ -23,8 +23,6 @@ namespace DarkSouls
         float groundDetectionRayStartPoint = 0.5f;
         [SerializeField]
         float minimumDistanceNeededToBeginFall = 1f;
-        [SerializeField]
-        float groundDirectionRayDistance = 2f;
 
         [Header("Movement Stats")]
         [SerializeField]
