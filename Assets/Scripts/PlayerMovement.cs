@@ -7,6 +7,8 @@ namespace DarkSouls
     public class PlayerMovement : MonoBehaviour
     {
         public Rigidbody myRigidbody;
+        public float inAirTimer;
+
         GameObject normalCamera;
         Transform myTransform;
         Transform cameraObject;
@@ -14,6 +16,15 @@ namespace DarkSouls
         Vector3 moveDirection;
         AnimateHandler animateHandler;
         PlayerManager playerManager;
+        LayerMask ignoreForGroundCheck;
+
+        [Header("Ground & Air Detection")]
+        [SerializeField]
+        float groundDetectionRayStartPoint = 0.5f;
+        [SerializeField]
+        float minimumDistanceNeededToBeginFall = 1f;
+        [SerializeField]
+        float groundDirectionRayDistance = 2f;
 
         [Header("Movement Stats")]
         [SerializeField]
@@ -22,6 +33,8 @@ namespace DarkSouls
         float sprintSpeed = 10;
         [SerializeField]
         float rotationSpeed = 10;
+        [SerializeField]
+        float fallingSpeed = 80;
 
         void Start()
         {
@@ -31,6 +44,9 @@ namespace DarkSouls
             animateHandler = GetComponentInChildren<AnimateHandler>();
             cameraObject = Camera.main.transform;
             myTransform = transform;
+
+            playerManager.isGrounded = true;
+            ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
         }
 
         #region Movement
@@ -58,7 +74,7 @@ namespace DarkSouls
 
         public void HandleMovement(float delta)
         {
-            if (inputHandler.rollFlag)
+            if (inputHandler.rollFlag || playerManager.isInAir)
             {
                 return;
             }
@@ -107,6 +123,75 @@ namespace DarkSouls
                 else
                 {
                     animateHandler.PlayTargetAnimation("StepBack", true);
+                }
+            }
+        }
+
+        public void HandleFalling(float delta)
+        {
+            playerManager.isGrounded = false;
+            RaycastHit hit;
+            Vector3 origin = myTransform.position;
+            origin.y += groundDetectionRayStartPoint;
+
+            if (Physics.Raycast(origin, myTransform.forward, out hit, 0.4f))
+            {
+                moveDirection = Vector3.zero;
+            }
+
+            if (playerManager.isInAir)
+            {
+                myRigidbody.AddForce(-Vector3.up * fallingSpeed, ForceMode.Acceleration);
+                myRigidbody.AddForce(moveDirection * fallingSpeed / 10f, ForceMode.Acceleration);
+            }
+
+            targetPosition = myTransform.position;
+
+            Debug.DrawRay(origin, -Vector3.up * minimumDistanceNeededToBeginFall, Color.red, 0.1f, false);
+
+            if (Physics.Raycast(origin, -Vector3.up, out hit, minimumDistanceNeededToBeginFall, ignoreForGroundCheck))
+            {
+                normalVector = hit.normal;
+                Vector3 tp = hit.point;
+                playerManager.isGrounded = true;
+                targetPosition.y = tp.y;
+
+                if (playerManager.isInAir)
+                {
+                    if (inAirTimer > 0.5f)
+                    {
+                        animateHandler.PlayTargetAnimation("Land", true);
+                    }
+                    else
+                    {
+                        animateHandler.PlayTargetAnimation("Locomotion", false);
+                    }
+
+                    playerManager.isInAir = false;
+                    inAirTimer = 0;
+                }
+
+                myTransform.position = targetPosition;
+            }
+            else
+            {
+                if (playerManager.isGrounded)
+                {
+                    playerManager.isGrounded = false;
+                }
+
+                if (playerManager.isInAir == false)
+                {
+                    if (playerManager.isInteracting == false)
+                    {
+                        animateHandler.PlayTargetAnimation("Falling", true);
+                    }
+
+                    Vector3 vel = myRigidbody.velocity;
+                    vel.Normalize();
+
+                    myRigidbody.velocity = vel * (movementSpeed / 2);
+                    playerManager.isInAir = true;
                 }
             }
         }

@@ -9,6 +9,8 @@ namespace DarkSouls
         [Header("Player Flags")]
         public bool isInteracting;
         public bool isSprinting;
+        public bool isInAir;
+        public bool isGrounded;
 
         InputHandler inputHandler;
         Animator anim;
@@ -39,6 +41,7 @@ namespace DarkSouls
             playerMovement.HandleMovement(delta);
             playerMovement.HandleRotation(delta);
             playerMovement.HandleRollingAndSprinting(delta);
+            playerMovement.HandleFalling(delta);
         }
 
         void FixedUpdate()
@@ -57,6 +60,12 @@ namespace DarkSouls
             inputHandler.rollFlag = false;
             inputHandler.sprintFlag = false;
             isSprinting = inputHandler.b_Input;
+            isGrounded = false;
+
+            if (isInAir)
+            {
+                playerMovement.inAirTimer += Time.deltaTime;
+            }
         }
     }
 }
