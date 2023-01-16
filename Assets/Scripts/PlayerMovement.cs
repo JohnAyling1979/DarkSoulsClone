@@ -139,8 +139,8 @@ namespace DarkSouls
 
             if (playerManager.isInAir)
             {
-                myRigidbody.AddForce(-Vector3.up * fallingSpeed, ForceMode.Acceleration);
-                myRigidbody.AddForce(moveDirection * fallingSpeed / 10f, ForceMode.Acceleration);
+                myRigidbody.AddForce(-Vector3.up * fallingSpeed);
+                myRigidbody.AddForce(moveDirection * fallingSpeed / 15f);
             }
 
             targetPosition = myTransform.position;
@@ -185,10 +185,6 @@ namespace DarkSouls
                         animateHandler.PlayTargetAnimation("Falling", true);
                     }
 
-                    Vector3 vel = myRigidbody.velocity;
-                    vel.Normalize();
-
-                    myRigidbody.velocity = vel * (movementSpeed / 2);
                     playerManager.isInAir = true;
                 }
             }

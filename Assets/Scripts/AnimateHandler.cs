@@ -82,7 +82,7 @@ namespace DarkSouls
 
         private void OnAnimatorMove()
         {
-            if (!playerManager.isInteracting)
+            if (!playerManager.isInteracting || playerManager.isInAir)
             {
                 return;
             }

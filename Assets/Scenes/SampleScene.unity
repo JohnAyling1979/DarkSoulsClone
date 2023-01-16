@@ -1966,6 +1966,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1509679202, guid: 27efc4d72db03f0be9d4c0c463e75d7d, type: 3}
+      propertyPath: leftWeapon
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7745984997577458890, guid: 27efc4d72db03f0be9d4c0c463e75d7d, type: 3}
       propertyPath: m_RootOrder
       value: 2
