@@ -8,7 +8,6 @@ namespace DarkSouls
     {
         [Header("Player Flags")]
         public bool isInteracting;
-        public bool isSprinting;
         public bool isInAir;
         public bool isGrounded;
 
@@ -58,7 +57,6 @@ namespace DarkSouls
             inputHandler.sprintFlag = false;
             inputHandler.rb_Input = false;
             inputHandler.rt_Input = false;
-            isGrounded = false;
 
             if (isInAir)
             {

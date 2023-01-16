@@ -86,7 +86,6 @@ namespace DarkSouls
             if (inputHandler.sprintFlag)
             {
                 speed = sprintSpeed;
-                playerManager.isSprinting = true;
             }
 
             moveDirection *= speed;
@@ -94,7 +93,7 @@ namespace DarkSouls
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             myRigidbody.velocity = projectedVelocity;
 
-            animateHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
+            animateHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, inputHandler.sprintFlag);
         }
 
         public void HandleRollingAndSprinting(float delta)
@@ -127,7 +126,6 @@ namespace DarkSouls
 
         public void HandleFalling(float delta)
         {
-            playerManager.isGrounded = false;
             RaycastHit hit;
             Vector3 origin = myTransform.position;
             origin.y += groundDetectionRayStartPoint;
@@ -140,7 +138,6 @@ namespace DarkSouls
             if (playerManager.isInAir)
             {
                 myRigidbody.AddForce(-Vector3.up * fallingSpeed);
-                myRigidbody.AddForce(moveDirection * fallingSpeed / 15f);
             }
 
             targetPosition = myTransform.position;
@@ -162,7 +159,7 @@ namespace DarkSouls
                     }
                     else
                     {
-                        animateHandler.PlayTargetAnimation("Locomotion", false);
+                        animateHandler.PlayTargetAnimation("Empty", false);
                     }
 
                     playerManager.isInAir = false;
@@ -176,6 +173,7 @@ namespace DarkSouls
                 if (playerManager.isGrounded)
                 {
                     playerManager.isGrounded = false;
+                    myRigidbody.AddForce((Vector3.up + moveDirection) * fallingSpeed * 5);
                 }
 
                 if (playerManager.isInAir == false)
