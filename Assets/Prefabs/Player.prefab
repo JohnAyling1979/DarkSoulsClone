@@ -46,6 +46,8 @@ GameObject:
   - component: {fileID: 7745984997577458889}
   - component: {fileID: 7745984997577458935}
   - component: {fileID: 1509679202}
+  - component: {fileID: 1509679203}
+  - component: {fileID: 3287851933650294147}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -76,7 +78,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7745984997577458893}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 7bd55ece446e4fb7c94bd4db19ac770f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.2
@@ -117,6 +119,8 @@ MonoBehaviour:
   mouseX: 0
   mouseY: 0
   b_Input: 0
+  rb_Input: 0
+  rt_Input: 0
   rollFlag: 0
   sprintFlag: 0
   rollInputTimer: 0
@@ -137,9 +141,9 @@ MonoBehaviour:
   groundDetectionRayStartPoint: 0.5
   minimumDistanceNeededToBeginFall: 0.75
   movementSpeed: 5
-  sprintSpeed: 10
+  sprintSpeed: 8
   rotationSpeed: 10
-  fallingSpeed: 10
+  fallingSpeed: 5
 --- !u!114 &7745984997577458935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,7 +157,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInteracting: 0
-  isSprinting: 0
   isInAir: 0
   isGrounded: 0
 --- !u!114 &1509679202
@@ -170,6 +173,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightWeapon: {fileID: 11400000, guid: d150518920f744cf6a47090ae725dab2, type: 2}
   leftWeapon: {fileID: 0}
+--- !u!114 &1509679203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7745984997577458893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23f106c72c532a2118239d94ed0eb952, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3287851933650294147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7745984997577458893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ba4cdbd406bbd6298f86fb6822d445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthLevel: 10
+  healthFactor: 10
+  maxHealth: 0
+  currentHealth: 0
+  healthBar: {fileID: 0}
 --- !u!1001 &7745984998109767051
 PrefabInstance:
   m_ObjectHideFlags: 0
